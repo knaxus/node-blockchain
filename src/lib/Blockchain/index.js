@@ -21,6 +21,7 @@ class Blockchain {
     for (let i = 1; i < chain.length; i += 1) {
       const block = chain[i];
       const actualLastHash = chain[i - 1].hash;
+      const lastDifficulty = chain[i - 1].difficulty;
 
       const {
         timestamp, lastHash, hash, data, nonce, difficulty,
@@ -28,6 +29,10 @@ class Blockchain {
 
       // if any of the lash hash is tapered with return false
       if (lastHash !== actualLastHash) {
+        return false;
+      }
+
+      if (lastDifficulty - difficulty > 1) {
         return false;
       }
 

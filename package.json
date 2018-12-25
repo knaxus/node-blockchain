@@ -15,5 +15,8 @@
     "eslint-plugin-import": "^2.14.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "hex-to-binary": "^1.0.1"
   }
 }
