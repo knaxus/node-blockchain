@@ -23,7 +23,7 @@ class Blockchain {
       const actualLastHash = chain[i - 1].hash;
 
       const {
-        timestamp, lastHash, hash, data,
+        timestamp, lastHash, hash, data, nonce, difficulty,
       } = block;
 
       // if any of the lash hash is tapered with return false
@@ -31,7 +31,7 @@ class Blockchain {
         return false;
       }
 
-      const validateHash = cryptoHash(timestamp, lastHash, data);
+      const validateHash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
       // check if the hash of the block is correct
       if (hash !== validateHash) {
         return false;

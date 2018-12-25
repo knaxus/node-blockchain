@@ -7,11 +7,15 @@ describe('Block', () => {
   const lastHash = '32321321asdadaseqqw24fsf';
   const hash = '43eaë32rrewrwerwerdasdasdsa';
   const data = 'secure-transaction data';
+  const nonce = 1;
+  const difficulty = 1;
   const block = new Block({
     timestamp,
     lastHash,
     hash,
     data,
+    nonce,
+    difficulty,
   });
 
   it('Should have timestamp, lastHash, hash and data fields', () => {
@@ -19,6 +23,8 @@ describe('Block', () => {
     expect(block.lastHash).toEqual(lastHash);
     expect(block.hash).toEqual(hash);
     expect(block.data).toEqual(data);
+    expect(block.nonce).toEqual(nonce);
+    expect(block.difficulty).toEqual(difficulty);
   });
 });
 
@@ -57,7 +63,19 @@ describe('Mine Block', () => {
 
   it('Should create a SHA-256 hash based on all the inputs', () => {
     expect(minedBlock.hash).toEqual(
-      cryptoHash(minedBlock.timestamp, minedBlock.lastHash, minedBlock.data),
+      cryptoHash(
+        minedBlock.timestamp,
+        minedBlock.lastHash,
+        minedBlock.data,
+        minedBlock.nonce,
+        minedBlock.difficulty,
+      ),
+    );
+  });
+
+  it('Should create a `hash` that matches the difficulty criteria', () => {
+    expect(minedBlock.hash.substring(0, minedBlock.difficulty)).toEqual(
+      '0'.repeat(minedBlock.difficulty),
     );
   });
 });
