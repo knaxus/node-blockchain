@@ -32,7 +32,7 @@ class Blockchain {
         return false;
       }
 
-      if (lastDifficulty - difficulty > 1) {
+      if (Math.abs(lastDifficulty - difficulty) > 1) {
         return false;
       }
 
