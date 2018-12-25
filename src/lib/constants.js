@@ -11,8 +11,19 @@ const GENESIS_DATA = {
   nonce: 0,
 };
 
+const CHANNELS = {
+  TEST: 'test',
+  BLOCKCHAIN: 'blockchain',
+};
+
+const EVENTS = {
+  MESSAGE: 'message',
+};
+
 module.exports = {
   GENESIS_DATA,
   INITIAL_DIFFICULTY,
   MINE_RATE,
+  CHANNELS,
+  EVENTS,
 };
