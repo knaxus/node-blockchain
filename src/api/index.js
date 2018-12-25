@@ -13,4 +13,5 @@ if (process.env.GENERATE_PEER_PORT) {
   PEER_PORT = DEFAULT_PORT;
 }
 
-app.listen(PEER_PORT, () => console.log(`server started at: http://localhost:${PEER_PORT}`));
+const PORT = PEER_PORT || DEFAULT_PORT;
+app.listen(PORT, () => console.log(`server started at: http://localhost:${PORT}`));
