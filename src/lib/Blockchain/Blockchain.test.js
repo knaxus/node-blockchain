@@ -1,10 +1,14 @@
 const Block = require('../Block');
 const Blockchain = require('.');
 
-let blockchain = new Blockchain();
+let blockchain;
+let newChain;
+let originalChain;
 
 beforeEach(() => {
   blockchain = new Blockchain();
+  newChain = new Blockchain();
+  originalChain = blockchain.chain;
 });
 
 describe('Blockchain', () => {
@@ -21,36 +25,67 @@ describe('Blockchain', () => {
     blockchain.addBlock({ data: newData });
     expect(blockchain.chain[blockchain.chain.length - 1].data).toEqual(newData);
   });
-});
 
-describe('isValidChain()', () => {
-  describe('When chain does not start with the Genesis Block', () => {
-    it('Should return false', () => {
-      blockchain.chain[0].data = 'random-data';
-      expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+  describe('isValidChain()', () => {
+    describe('When chain does not start with the Genesis Block', () => {
+      it('Should return false', () => {
+        blockchain.chain[0].data = 'random-data';
+        expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+      });
+    });
+
+    beforeEach(() => {
+      blockchain.addBlock({ data: 'Foo' });
+      blockchain.addBlock({ data: 'Bar' });
+      blockchain.addBlock({ data: 'Foo Bar' });
+      blockchain.addBlock({ data: 'Tampered' });
+    });
+
+    describe('When chain starts with Genesis Block and has multiple blocks', () => {
+      it('Should return false if a lastHash reference is changed', () => {
+        blockchain.chain[2].lastHash = 'broken-last-hash';
+        expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+      });
+
+      it('Should return false is the chain contains an invalid field', () => {
+        blockchain.chain[2].data = 'broken-last-hash';
+        expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+      });
+
+      it('Should return true if the chain does not contain any invalid block', () => {
+        expect(Blockchain.isValidChain(blockchain.chain)).toBe(true);
+      });
     });
   });
 
-  beforeEach(() => {
-    blockchain.addBlock({ data: 'Foo' });
-    blockchain.addBlock({ data: 'Bar' });
-    blockchain.addBlock({ data: 'Foo Bar' });
-    blockchain.addBlock({ data: 'Tampered' });
-  });
-
-  describe('When chain starts with Genesis Block and has multiple blocks', () => {
-    it('Should return false if a lastHash reference is changed', () => {
-      blockchain.chain[2].lastHash = 'broken-last-hash';
-      expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+  describe('replaceChain()', () => {
+    describe('When the chain is not longer', () => {
+      it('Should not replace the chain', () => {
+        newChain.chain[0] = { new: 'new chain' };
+        blockchain.replaceChain(newChain.chain);
+        expect(blockchain.chain).toEqual(originalChain);
+      });
     });
 
-    it('Should return false is the chain contains an invalid field', () => {
-      blockchain.chain[2].data = 'broken-last-hash';
-      expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
-    });
+    describe('When the chain is longer', () => {
+      beforeEach(() => {
+        newChain.addBlock({ data: 'Foo' });
+        newChain.addBlock({ data: 'Bar' });
+        newChain.addBlock({ data: 'Foo Bar' });
+        newChain.addBlock({ data: 'Tampered' });
+      });
 
-    it('Should return true if the chain does not contain any invalid block', () => {
-      expect(Blockchain.isValidChain(blockchain.chain)).toBe(true);
+      it('Should not replace if the chain is invalid', () => {
+        newChain.chain[2].hash = 'damaged-hash';
+        // since the hash is damaged, the chain should remain equal to the original chain
+        blockchain.replaceChain(newChain.chain);
+        expect(blockchain.chain).toEqual(originalChain);
+      });
+
+      it('Shouldreplace the chain if the incoming chain is valid', () => {
+        blockchain.replaceChain(newChain.chain);
+        expect(blockchain.chain).toEqual(newChain.chain);
+      });
     });
   });
 });
