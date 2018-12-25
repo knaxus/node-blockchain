@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm run redis && nodemon src/api/index",
+    "dev-peer": "cross-env GENERATE_PEER_PORT=true nodemon src/api/index",
     "redis": "redis-server deamonize yes",
     "test": "jest --watchAll"
   },
@@ -12,6 +13,7 @@
   "author": "Ashok Dey <ashokdey100@gmail.com> (http://ashokdey.in)",
   "license": "MIT",
   "devDependencies": {
+    "cross-env": "^5.2.0",
     "eslint": "^5.11.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
