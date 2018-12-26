@@ -3,7 +3,7 @@ const { CHANNELS, EVENTS } = require('../constants');
 
 class PubSub {
   constructor({ blockchain }) {
-    console.log('inside construct of pubsub: ', { blockchain });
+    // console.log('inside construct of pubsub: ', { blockchain });
     this.blockchain = blockchain;
     this.publisher = redis.createClient();
     this.subscriber = redis.createClient();
