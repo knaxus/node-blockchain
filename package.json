@@ -8,6 +8,7 @@
     "dev-peer": "cross-env GENERATE_PEER_PORT=true nodemon src/api/index",
     "redis": "redis-server daemonize yes",
     "test": "jest",
+    "coverage": "jest --coverage",
     "test-w": "jest --watchAll"
   },
   "jest": {
