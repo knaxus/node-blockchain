@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run redis && nodemon src/api/index",
+    "dev": "nodemon src/api/index",
     "dev-peer": "cross-env GENERATE_PEER_PORT=true nodemon src/api/index",
-    "redis": "redis-server deamonize yes",
+    "redis": "redis-server daemonize yes",
     "test": "jest --watchAll"
   },
   "keywords": [],
