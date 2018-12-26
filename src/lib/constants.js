@@ -20,10 +20,13 @@ const EVENTS = {
   MESSAGE: 'message',
 };
 
+const STARTING_BALANCE = 1000;
+
 module.exports = {
   GENESIS_DATA,
   INITIAL_DIFFICULTY,
   MINE_RATE,
   CHANNELS,
   EVENTS,
+  STARTING_BALANCE,
 };

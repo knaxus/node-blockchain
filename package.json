@@ -9,6 +9,9 @@
     "redis": "redis-server daemonize yes",
     "test": "jest --watchAll"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "keywords": [],
   "author": "Ashok Dey <ashokdey100@gmail.com> (http://ashokdey.in)",
   "license": "MIT",
@@ -21,6 +24,7 @@
     "nodemon": "^1.18.9"
   },
   "dependencies": {
+    "elliptic": "^6.4.1",
     "express": "^4.16.4",
     "hex-to-binary": "^1.0.1",
     "redis": "^2.8.0",
