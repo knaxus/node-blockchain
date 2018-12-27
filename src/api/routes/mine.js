@@ -5,7 +5,8 @@ const mineBlockRoute = Router().post('/', (req, res) => {
   const { blockData: data } = req.body;
   blockchain.addBlock({ data });
   pubsub.broadcastChain();
-  res.json({
+  return res.status(201).json({
+    status: 'successful',
     data: blockchain.chain[blockchain.chain.length - 1],
     msg: 'added to the block',
   });
