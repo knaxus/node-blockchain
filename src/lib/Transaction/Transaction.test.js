@@ -60,4 +60,25 @@ describe('Transaction Class', () => {
       ).toBe(true);
     });
   });
+
+  describe('Transaction.isValidTransaction()', () => {
+    describe('When the transaction is valid', () => {
+      it('Should return true for a valid transaction', () => {
+        expect(Transaction.isValidTransaction(transaction)).toBe(true);
+      });
+    });
+
+    describe('When the transaction is invalid', () => {
+      it('Should return false if the transaction `outputMap` is invalid', () => {
+        // Tamper with the recepient
+        transaction.outputMap[senderWallet.publicKey] = 'random-garbage-value';
+        expect(Transaction.isValidTransaction(transaction)).toBe(false);
+      });
+
+      it('Should return false if the transaction `input` signature is invalid', () => {
+        transaction.input.signature = new Wallet().sign('random-data');
+        expect(Transaction.isValidTransaction(transaction)).toBe(false);
+      });
+    });
+  });
 });
