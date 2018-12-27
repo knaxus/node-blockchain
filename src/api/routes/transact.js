@@ -13,7 +13,7 @@ const generateTransactionRoute = Router().post('/', (req, res) => {
       msg: 'new transaction created',
     });
   } catch (e) {
-    return res.status(500).json({
+    return res.status(422).json({
       status: 'failed',
       data: {},
       msg: e.message,
