@@ -10,7 +10,7 @@ describe('Transaction Class', () => {
 
   beforeEach(() => {
     senderWallet = new Wallet();
-    recepient = 'random-recepient-public-key';
+    recepient = 'random-recepient';
     amount = 50;
     transaction = new Transaction({ senderWallet, recepient, amount });
   });
@@ -134,6 +134,29 @@ describe('Transaction Class', () => {
 
       it('Should re-sign the transaction', () => {
         expect(transaction.input.signature).not.toEqual(originalSignature);
+      });
+
+      describe('Another update for the same recepient', () => {
+        let addedAmount;
+
+        beforeEach(() => {
+          addedAmount = 80;
+          transaction.update({
+            senderWallet,
+            recepient: nextRecepient,
+            amount: addedAmount,
+          });
+        });
+
+        it('Should add to the recepient amount', () => {
+          expect(transaction.outputMap[nextRecepient]).toEqual(nextAmount + addedAmount);
+        });
+
+        it('Should subtract the amount from the original sender output amount', () => {
+          expect(transaction.outputMap[senderWallet.publicKey]).toEqual(
+            originalSenderOutput - nextAmount - addedAmount,
+          );
+        });
       });
     });
   });
