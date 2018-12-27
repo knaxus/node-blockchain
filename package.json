@@ -9,6 +9,7 @@
     "redis": "redis-server daemonize yes",
     "test": "jest --verbose",
     "coverage": "jest --coverage",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "test-w": "jest --watchAll"
   },
   "jest": {
