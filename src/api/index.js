@@ -1,7 +1,7 @@
 const express = require('express');
 const request = require('request');
 const routes = require('./routes');
-const { blockchain } = require('./globals');
+const { blockchain, transactionPool } = require('./globals');
 
 const app = express();
 app.use(express.json());
@@ -19,7 +19,7 @@ if (process.env.GENERATE_PEER_PORT) {
   PEER_PORT = DEFAULT_PORT;
 }
 
-const syncChains = () => {
+const syncWithRootNode = () => {
   request(
     {
       url: `${ROOT_NODE_ADDRESS}/api/blocks`,
@@ -32,7 +32,25 @@ const syncChains = () => {
       } else if (!error && response.statusCode === 200) {
         // console.log('data from root node: ', body);
         const rootChain = JSON.parse(body);
-        blockchain.replaceChain(rootChain.data);
+        blockchain.replaceChain(rootChain.data.chain);
+        // console.log('Updated chain: ', JSON.stringify(blockchain.chain));
+      }
+    },
+  );
+
+  request(
+    {
+      url: `${ROOT_NODE_ADDRESS}/api/transactions/pool`,
+      method: 'GET',
+    },
+    (error, response, body) => {
+      if (error) {
+        console.error('Failed to update transaction map. Exiting..');
+        process.exit(-1);
+      } else if (!error && response.statusCode === 200) {
+        // console.log('data from root node: ', body);
+        const rootTransactionMap = JSON.parse(body);
+        transactionPool.setMap(rootTransactionMap.data.pool);
         // console.log('Updated chain: ', JSON.stringify(blockchain.chain));
       }
     },
@@ -43,6 +61,6 @@ const PORT = PEER_PORT || DEFAULT_PORT;
 app.listen(PORT, () => {
   console.log(`server started at: http://localhost:${PORT}`);
   if (PORT !== DEFAULT_PORT) {
-    syncChains();
+    syncWithRootNode();
   }
 });
