@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { transactionPool, wallet } = require('../globals');
+const { transactionPool, wallet, pubsub } = require('../globals');
 
 const generateTransactionRoute = Router().post('/', (req, res) => {
   const { amount, recepient } = req.body;
@@ -17,6 +17,7 @@ const generateTransactionRoute = Router().post('/', (req, res) => {
     }
 
     transactionPool.setTransaction(transaction);
+    pubsub.broadcastTransaction(transaction);
     console.log('Transaction Pool: ', transactionPool);
 
     return res.status(201).json({

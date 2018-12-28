@@ -13,11 +13,12 @@ const GENESIS_DATA = {
 
 const CHANNELS = {
   TEST: 'test',
-  BLOCKCHAIN: 'blockchain',
+  BLOCKCHAIN: 'BLOCKCHAIN',
+  TRANSACTION: 'TRANSACTION',
 };
 
 const EVENTS = {
-  MESSAGE: 'message',
+  MESSAGE: 'message', // Do not change the value it's used by PubSub.publish()
 };
 
 const STARTING_BALANCE = 1000;

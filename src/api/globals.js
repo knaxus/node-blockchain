@@ -4,9 +4,9 @@ const Wallet = require('../lib/Wallet');
 const TransactionPool = require('../lib/TransactionPool');
 
 const blockchain = new Blockchain();
-const pubsub = new PubSub({ blockchain });
 const wallet = new Wallet();
 const transactionPool = new TransactionPool();
+const pubsub = new PubSub({ blockchain, transactionPool });
 
 module.exports = {
   blockchain,
