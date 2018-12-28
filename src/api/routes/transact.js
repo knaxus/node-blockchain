@@ -18,7 +18,6 @@ const generateTransactionRoute = Router().post('/', (req, res) => {
 
     transactionPool.setTransaction(transaction);
     pubsub.broadcastTransaction(transaction);
-    console.log('Transaction Pool: ', transactionPool);
 
     return res.status(201).json({
       status: 'success',
