@@ -27,7 +27,7 @@
     "nodemon": "^1.18.9"
   },
   "dependencies": {
-    "elliptic": "^6.5.3",
+    "elliptic": "^6.5.4",
     "express": "^4.16.4",
     "hex-to-binary": "^1.0.1",
     "redis": "^2.8.0",
